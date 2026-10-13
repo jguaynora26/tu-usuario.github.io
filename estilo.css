@@ -199,3 +199,37 @@ button:disabled {
 .aparecer {
   animation: aparecer 0.4s ease;
 }
+.controles-finales {
+  margin-top: 30px;
+  padding: 20px;
+}
+
+.btn-reiniciar {
+  background: #e53935;
+  padding: 12px 24px;
+  font-size: 15px;
+}
+
+.btn-reiniciar:hover {
+  background: #c62828;
+}
+
+.notificacion-guardado {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #43a047;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+
+.notificacion-guardado.visible {
+  opacity: 1;
+}
