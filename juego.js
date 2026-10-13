@@ -196,15 +196,18 @@ function atenderCliente() {
 
 // ===== REINICIAR JUEGO =====
 function reiniciarJuego() {
-  const confirmar = confirm("¿Seguro que quieres reiniciar el juego? Perderás todo tu progreso.");
-  
-  if (!confirmar) return;
-  
   localStorage.removeItem("davidStore");
   cargarJuego();
   actualizarPantalla();
   generarCliente();
-  alert("🔄 Juego reiniciado. ¡Empiezas de nuevo con B/. 10.00!");
+  mostrarMensajeReinicio();
+}
+function mostrarMensajeReinicio() {
+  const mensaje = document.getElementById("mensajeCliente");
+  mensaje.textContent = "🔄 ¡Juego reiniciado! Empiezas con B/. 10.00";
+  mensaje.classList.remove("aparecer");
+  void mensaje.offsetWidth;
+  mensaje.classList.add("aparecer");
 }
 
 // ===== INICIO =====
