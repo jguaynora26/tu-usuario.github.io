@@ -2,11 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>David Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>David Store - Tienda Saludable</title>
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-  <h1>Bienvenido a David Store</h1>
+  <header>
+    <h1>🥗 David Store</h1>
+    <p class="subtitulo">Tu tienda de alimentos saludables</p>
+  </header>
   
   <div class="panel">
     <p>💰 Dinero: B/. <span id="dinero">10.00</span></p>
@@ -14,13 +18,17 @@
     <p>💵 Ganancia total: B/. <span id="ganancia">0.00</span></p>
   </div>
   
-  <h2>Tu inventario</h2>
+  <h2>🥬 Tu inventario</h2>
   <div id="inventario"></div>
   
-  <h2>Cliente</h2>
+  <h2>👤 Cliente</h2>
   <div id="cliente">
     <p id="mensajeCliente">Esperando cliente...</p>
     <button id="btnAtender" onclick="atenderCliente()">Atender cliente</button>
+  </div>
+  
+  <div class="controles-finales">
+    <button id="btnReiniciar" class="btn-reiniciar" onclick="reiniciarJuego()">🔄 Reiniciar juego</button>
   </div>
   
   <script src="juego.js"></script>
