@@ -1,19 +1,76 @@
-// ===== ESTADO DEL JUEGO =====
-let dinero = 10.00;
-let ventasDelDia = 0;
-let gananciaTotal = 0.00;
+// ===== ESTADO INICIAL (por si no hay nada guardado) =====
+const ESTADO_INICIAL = {
+  dinero: 10.00,
+  ventasDelDia: 0,
+  gananciaTotal: 0.00,
+  inventario: [
+    { nombre: "Manzana", emoji: "🍎", costo: 0.30, precio: 0.60, stock: 5 },
+    { nombre: "Plátano", emoji: "🍌", costo: 0.20, precio: 0.50, stock: 5 },
+    { nombre: "Ensalada", emoji: "🥗", costo: 0.80, precio: 1.50, stock: 3 },
+    { nombre: "Jugo natural", emoji: "🥤", costo: 0.40, precio: 1.00, stock: 4 },
+    { nombre: "Zanahoria", emoji: "🥕", costo: 0.15, precio: 0.40, stock: 6 },
+    { nombre: "Yogur", emoji: "🥛", costo: 0.50, precio: 1.10, stock: 3 }
+  ]
+};
 
-// Inventario de alimentos saludables
-let inventario = [
-  { nombre: "Manzana", emoji: "🍎", costo: 0.30, precio: 0.60, stock: 5 },
-  { nombre: "Plátano", emoji: "🍌", costo: 0.20, precio: 0.50, stock: 5 },
-  { nombre: "Ensalada", emoji: "🥗", costo: 0.80, precio: 1.50, stock: 3 },
-  { nombre: "Jugo natural", emoji: "🥤", costo: 0.40, precio: 1.00, stock: 4 },
-  { nombre: "Zanahoria", emoji: "🥕", costo: 0.15, precio: 0.40, stock: 6 },
-  { nombre: "Yogur", emoji: "🥛", costo: 0.50, precio: 1.10, stock: 3 }
-];
-
+// ===== VARIABLES DEL JUEGO =====
+let dinero;
+let ventasDelDia;
+let gananciaTotal;
+let inventario;
 let clienteActual = null;
+
+// ===== CARGAR DATOS GUARDADOS =====
+function cargarJuego() {
+  const guardado = localStorage.getItem("davidStore");
+  
+  if (guardado) {
+    const datos = JSON.parse(guardado);
+    dinero = datos.dinero;
+    ventasDelDia = datos.ventasDelDia;
+    gananciaTotal = datos.gananciaTotal;
+    inventario = datos.inventario;
+  } else {
+    // No hay datos, empezar desde cero
+    dinero = ESTADO_INICIAL.dinero;
+    ventasDelDia = ESTADO_INICIAL.ventasDelDia;
+    gananciaTotal = ESTADO_INICIAL.gananciaTotal;
+    inventario = JSON.parse(JSON.stringify(ESTADO_INICIAL.inventario));
+  }
+}
+
+// ===== GUARDAR DATOS =====
+function guardarJuego() {
+  const datos = {
+    dinero: dinero,
+    ventasDelDia: ventasDelDia,
+    gananciaTotal: gananciaTotal,
+    inventario: inventario
+  };
+  
+  localStorage.setItem("davidStore", JSON.stringify(datos));
+  mostrarNotificacionGuardado();
+}
+
+// ===== NOTIFICACIÓN DE GUARDADO =====
+function mostrarNotificacionGuardado() {
+  let notif = document.getElementById("notifGuardado");
+  
+  if (!notif) {
+    notif = document.createElement("div");
+    notif.id = "notifGuardado";
+    notif.className = "notificacion-guardado";
+    notif.textContent = "💾 Guardado";
+    document.body.appendChild(notif);
+  }
+  
+  notif.classList.add("visible");
+  
+  clearTimeout(notif.timeout);
+  notif.timeout = setTimeout(function() {
+    notif.classList.remove("visible");
+  }, 1500);
+}
 
 // ===== ACTUALIZAR PANTALLA =====
 function actualizarPantalla() {
@@ -52,6 +109,7 @@ function cambiarPrecio(indice) {
   
   inventario[indice].precio = nuevoPrecio;
   actualizarPantalla();
+  guardarJuego();
   alert("Precio de " + inventario[indice].nombre + " cambiado a B/. " + nuevoPrecio.toFixed(2));
 }
 
@@ -68,6 +126,7 @@ function reabastecer(indice) {
   dinero = dinero - costoTotal;
   producto.stock = producto.stock + 5;
   actualizarPantalla();
+  guardarJuego();
   alert("Compraste 5 " + producto.emoji + " " + producto.nombre + " por B/. " + costoTotal.toFixed(2));
 }
 
@@ -130,10 +189,25 @@ function atenderCliente() {
   
   clienteActual = null;
   actualizarPantalla();
+  guardarJuego();
   
   setTimeout(generarCliente, 2000);
 }
 
+// ===== REINICIAR JUEGO =====
+function reiniciarJuego() {
+  const confirmar = confirm("¿Seguro que quieres reiniciar el juego? Perderás todo tu progreso.");
+  
+  if (!confirmar) return;
+  
+  localStorage.removeItem("davidStore");
+  cargarJuego();
+  actualizarPantalla();
+  generarCliente();
+  alert("🔄 Juego reiniciado. ¡Empiezas de nuevo con B/. 10.00!");
+}
+
 // ===== INICIO =====
+cargarJuego();
 actualizarPantalla();
 generarCliente();
