@@ -211,9 +211,3 @@ function reiniciarJuego() {
 cargarJuego();
 actualizarPantalla();
 generarCliente();
-  setTimeout(generarCliente, 2000);
-}
-
-// ===== INICIO =====
-actualizarPantalla();
-generarCliente();
